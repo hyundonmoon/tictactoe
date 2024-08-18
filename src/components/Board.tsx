@@ -12,7 +12,7 @@ export default function Board({
       {boardState.map((value, index) => (
         <button
           key={index}
-          className="col-span-1 w-36 h-36 p-8 shadow-md cursor-pointer rounded-3xl flex justify-center items-center overflow-hidden active:shadow-inner"
+          className="col-span-1 w-36 h-36 p-8 bg-blue-100 shadow-md shadow-blue-400/50 cursor-pointer rounded-3xl flex justify-center items-center overflow-hidden active:shadow-inner"
           onClick={() => handleBoardClick(index)}
         >
           {value}
