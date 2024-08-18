@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 import Board from '../components/Board';
-import { BoardState as BoardModel } from '../types/boardState.model';
+import { BoardState } from '../types/boardState.model';
 import useGameState from '../hooks/useGameState';
+import getNextMoveForComputer from '../utils/minimax';
 
 export default function SinglePlayerGame() {
   const [boardState, setBoardState] = useState(
-    Array.from({ length: 9 }).fill('') as BoardModel,
+    Array.from({ length: 9 }).fill('') as BoardState,
   );
-  const [currentTurn, setCurrentTurn] = useState<'O' | 'X'>('X');
-  const { winner, isGameOver, isDraw } = useGameState(boardState);
+  const { winner, isGameOver, isDraw, currentTurn, setCurrentTurn } =
+    useGameState(boardState);
 
   const handleBoardClick = (idx: number) => {
-    if (currentTurn !== 'X') return;
     if (boardState[idx] !== '') return;
     if (isGameOver) return;
 
-    const newBoardState = [...boardState] as BoardModel;
+    const newBoardState = [...boardState] as BoardState;
     newBoardState[idx] = currentTurn;
     setBoardState(newBoardState);
     setCurrentTurn((currentTurn) => (currentTurn === 'O' ? 'X' : 'O'));
@@ -34,7 +34,14 @@ export default function SinglePlayerGame() {
   useEffect(() => {
     if (isGameOver) return;
     if (currentTurn === 'X') return;
-    // TODO: implement computer move logic
+
+    const nextMoveIdx = getNextMoveForComputer(boardState);
+
+    if (nextMoveIdx !== -1) {
+      setTimeout(() => {
+        handleBoardClick(nextMoveIdx);
+      }, 1000);
+    }
   }, [boardState, isGameOver, currentTurn]);
 
   return (

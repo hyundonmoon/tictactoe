@@ -3,6 +3,7 @@ import { BoardState } from '../types/boardState.model';
 import getGameState from '../utils/getGameState';
 
 export default function useGameState(boardState: BoardState) {
+  const [currentTurn, setCurrentTurn] = useState<'O' | 'X'>('X');
   const [isGameOver, setIsGameOver] = useState(false);
   const [winner, setWinner] = useState<'O' | 'X' | ''>('');
   const [isDraw, setIsDraw] = useState(false);
@@ -11,11 +12,11 @@ export default function useGameState(boardState: BoardState) {
     const status = getGameState(boardState);
 
     if (status.isGameOver) {
-      setIsGameOver(true);
       setWinner(status.winner);
       setIsDraw(status.isDraw);
+      setIsGameOver(true);
     }
   }, [boardState]);
 
-  return { isGameOver, winner, isDraw };
+  return { isGameOver, winner, isDraw, currentTurn, setCurrentTurn };
 }
