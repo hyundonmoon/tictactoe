@@ -11,9 +11,8 @@ export default function SinglePlayerGame() {
   const { winner, isGameOver, isDraw, currentTurn, setCurrentTurn } =
     useGameState(boardState);
 
-  const handleBoardClick = (idx: number) => {
-    if (boardState[idx] !== '') return;
-    if (isGameOver) return;
+  const makeMove = (idx: number) => {
+    if (boardState[idx] !== '' || isGameOver) return;
 
     const newBoardState = [...boardState] as BoardState;
     newBoardState[idx] = currentTurn;
@@ -39,14 +38,18 @@ export default function SinglePlayerGame() {
 
     if (nextMoveIdx !== -1) {
       setTimeout(() => {
-        handleBoardClick(nextMoveIdx);
+        makeMove(nextMoveIdx);
       }, 1000);
     }
   }, [boardState, isGameOver, currentTurn]);
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <Board boardState={boardState} handleBoardClick={handleBoardClick} />
+    <div className="w-full h-full flex flex-col justify-center items-center">
+      <Board
+        boardState={boardState}
+        makeMove={makeMove}
+        currentTurn={currentTurn}
+      />
     </div>
   );
 }
