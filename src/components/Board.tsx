@@ -4,18 +4,12 @@ import XMarkIcon from './XMarkIcon';
 
 export default function Board({
   boardState,
-  currentTurn,
   makeMove,
 }: {
   boardState: BoardModel;
-  currentTurn: 'O' | 'X';
   makeMove: (idx: number) => void;
 }) {
   const handleBoardClick = (idx: number) => {
-    if (currentTurn !== 'X') {
-      return;
-    }
-
     makeMove(idx);
   };
 

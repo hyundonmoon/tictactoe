@@ -2,10 +2,13 @@ import { useReducer } from 'react';
 import { GameResult, GameStats } from '../types/gameStats.model';
 import GAME_RESULTS from '../constants/gameResult.constants';
 
-function reducer(state: GameStats, result: GameResult): GameStats {
-  const newState = { ...state };
+function reducer(
+  state: GameStats,
+  action: { type: GameResult | 'reset' },
+): GameStats {
+  let newState = { ...state };
 
-  switch (result) {
+  switch (action.type) {
     case GAME_RESULTS.WIN:
       newState.wins++;
       break;
@@ -14,6 +17,9 @@ function reducer(state: GameStats, result: GameResult): GameStats {
       break;
     case GAME_RESULTS.DRAW:
       newState.draws++;
+      break;
+    case 'reset':
+      newState = initialStats;
       break;
     default:
       break;
