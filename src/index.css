@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply w-screen h-screen;
+    @apply w-screen h-screen font-mono;
   }
 
   body > #root {
