@@ -24,7 +24,7 @@ export default function Board({
       {boardState.map((value, index) => (
         <button
           key={index}
-          className="col-span-1 w-36 h-36 p-8 bg-white shadow-md shadow-gray-100/50 cursor-pointer rounded-3xl flex justify-center items-center overflow-hidden enabled:active:shadow-inner disabled:shadow-inner disabled:bg-gray-50 disabled:cursor-not-allowed"
+          className="w-36 h-36 p-8 bg-white shadow-md shadow-gray-400 cursor-pointer rounded-3xl flex justify-center items-center overflow-hidden disabled:shadow-inner disabled:shadow-gray-600 disabled:bg-gray-50 disabled:cursor-not-allowed hover:bg-gray-50"
           onClick={() => handleBoardClick(index)}
           disabled={value !== ''}
         >
