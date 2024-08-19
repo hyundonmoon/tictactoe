@@ -8,6 +8,6 @@
   }
 
   body > #root {
-    @apply w-full h-full bg-amber-100;
+    @apply w-full h-full bg-amber-200;
   }
 }
