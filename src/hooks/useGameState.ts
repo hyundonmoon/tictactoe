@@ -15,11 +15,15 @@ export default function useGameState() {
   const { gameStats, dispatchGameResult } = useGameStats();
 
   const reset = () => {
+    playAgain();
+    dispatchGameResult({ type: 'reset' });
+  };
+
+  const playAgain = () => {
     setCurrentTurn('X');
     setIsGameOver(false);
     setWinner('');
     setIsDraw(false);
-    dispatchGameResult({ type: 'reset' });
     setBoardState(Array.from({ length: 9 }).fill('') as BoardState);
   };
 
@@ -51,5 +55,6 @@ export default function useGameState() {
     setCurrentTurn,
     gameStats,
     reset,
+    playAgain,
   };
 }

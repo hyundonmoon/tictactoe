@@ -1,7 +1,7 @@
 export default function ResetBtn({ handleClick }: { handleClick: () => void }) {
   return (
     <button
-      className="w-20 h-20 p-4 bg-rose-500 rounded-3xl overflow-hidden flex justify-center items-center hover:bg-rose-600"
+      className="w-14 h-14 p-4 bg-rose-500 rounded-lg overflow-hidden flex justify-center items-center hover:bg-rose-600"
       onClick={handleClick}
     >
       <svg viewBox="0 0 21 21" className="text-white stroke-current">

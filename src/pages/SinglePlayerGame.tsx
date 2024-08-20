@@ -11,11 +11,11 @@ export default function SinglePlayerGame() {
   const {
     winner,
     isGameOver,
-    isDraw,
     currentTurn,
     setCurrentTurn,
     gameStats,
     reset,
+    playAgain,
     boardState,
     setBoardState,
   } = useGameState();
@@ -29,16 +29,6 @@ export default function SinglePlayerGame() {
     setBoardState(newBoardState);
     setCurrentTurn((currentTurn) => (currentTurn === 'O' ? 'X' : 'O'));
   };
-
-  useEffect(() => {
-    if (isGameOver) {
-      if (isDraw) {
-        alert('Draw!');
-      } else {
-        alert(`Game over! The winner is: ${winner}`);
-      }
-    }
-  }, [isGameOver]);
 
   useEffect(() => {
     if (isGameOver) return;
@@ -74,7 +64,7 @@ export default function SinglePlayerGame() {
         isGameOver={isGameOver}
         winner={winner}
         currentPlayer="X"
-        onClose={reset}
+        onClose={playAgain}
       />
     </div>
   );
