@@ -5,6 +5,7 @@ import useGameState from '../hooks/useGameState';
 import getNextMoveForComputer from '../utils/minimax';
 import ResetBtn from '../components/ResetBtn';
 import SinglePlayerScoreboard from '../components/SinglePlayerScoreboard';
+import GameOverModal from '../components/GameOverModal';
 
 export default function SinglePlayerGame() {
   const {
@@ -19,8 +20,9 @@ export default function SinglePlayerGame() {
     setBoardState,
   } = useGameState();
 
-  const makeMove = (idx: number) => {
+  const makeMove = (idx: number, player: 'O' | 'X', currentTurn: 'O' | 'X') => {
     if (boardState[idx] !== '' || isGameOver) return;
+    if (currentTurn !== player) return;
 
     const newBoardState = [...boardState] as BoardState;
     newBoardState[idx] = currentTurn;
@@ -48,7 +50,7 @@ export default function SinglePlayerGame() {
 
     if (nextMoveIdx !== -1) {
       timeoutId = setTimeout(() => {
-        makeMove(nextMoveIdx);
+        makeMove(nextMoveIdx, 'O', currentTurn);
       }, 1000);
     }
 
@@ -62,8 +64,18 @@ export default function SinglePlayerGame() {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center gap-4">
       <SinglePlayerScoreboard stats={gameStats} />
-      <Board boardState={boardState} makeMove={makeMove} />
+      <Board
+        boardState={boardState}
+        makeMove={makeMove}
+        currentTurn={currentTurn}
+      />
       <ResetBtn handleClick={reset} />
+      <GameOverModal
+        isGameOver={isGameOver}
+        winner={winner}
+        currentPlayer="X"
+        onClose={reset}
+      />
     </div>
   );
 }
