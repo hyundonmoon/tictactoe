@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Board from '../components/Board';
 import { BoardState } from '../types/boardState.model';
 import useGameState from '../hooks/useGameState';
@@ -6,6 +6,7 @@ import getNextMoveForComputer from '../utils/minimax';
 import ResetBtn from '../components/ResetBtn';
 import SinglePlayerScoreboard from '../components/SinglePlayerScoreboard';
 import GameOverModal from '../components/GameOverModal';
+import ResetConfirmModal from '../components/ResetConfirmModal';
 
 export default function SinglePlayerGame() {
   const {
@@ -19,6 +20,7 @@ export default function SinglePlayerGame() {
     boardState,
     setBoardState,
   } = useGameState();
+  const [isResetConfirmModalOpen, setIsResetConfirmModalOpen] = useState(false);
 
   const makeMove = (idx: number, player: 'O' | 'X', currentTurn: 'O' | 'X') => {
     if (boardState[idx] !== '' || isGameOver) return;
@@ -59,12 +61,23 @@ export default function SinglePlayerGame() {
         makeMove={makeMove}
         currentTurn={currentTurn}
       />
-      <ResetBtn handleClick={reset} />
+      <ResetBtn
+        handleClick={() => {
+          setIsResetConfirmModalOpen(true);
+        }}
+      />
       <GameOverModal
         isGameOver={isGameOver}
         winner={winner}
         currentPlayer="X"
         onClose={playAgain}
+      />
+      <ResetConfirmModal
+        isResetConfirmModalOpen={isResetConfirmModalOpen}
+        closeModal={() => {
+          setIsResetConfirmModalOpen(false);
+        }}
+        reset={reset}
       />
     </div>
   );
