@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import getGameOverMsg from '../utils/getGameOverMsg';
-import GAME_RESULTS from '../constants/gameResult.constants';
+import getGameOverMsg from '../../utils/getGameOverMsg';
+import GAME_RESULTS from '../../constants/gameResult.constants';
 
-import { GameResult } from '../types/gameStats.model';
-import getGameOverGif from '../utils/getGameOverGif';
+import { GameResult } from '../../types/gameStats.model';
+import getGameOverGif from '../../utils/getGameOverGif';
 
 export default function GameOverModal({
   isGameOver,
