@@ -54,13 +54,17 @@ export default function UserNicknameModal({
           maxLength={20}
           value={nickname}
           onChange={(e) => {
+            console.log(e.target.value);
             setNickname(e.target.value?.trim());
           }}
         />
         <div className="flex justify-center space-x-4">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition
+            disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed
+            "
+            disabled={nickname === ''}
           >
             Confirm
           </button>
