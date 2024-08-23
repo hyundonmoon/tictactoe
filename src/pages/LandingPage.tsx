@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import githubIcon from '../assets/github.svg';
 import UserNicknameModal from '../components/modals/UserNicknameModal';
 import { useState } from 'react';
 
 export default function LandingPage() {
   const [isUserNickNameModalOpen, setIsNickNameModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -55,6 +56,7 @@ export default function LandingPage() {
         }}
         onSubmit={(nickname: string) => {
           localStorage.setItem('nickname', nickname);
+          navigate('/multi-player-lobby');
         }}
       />
     </>

@@ -4,6 +4,7 @@ import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LandingPage from './pages/LandingPage.tsx';
 import SinglePlayerGame from './pages/SinglePlayerGame.tsx';
+import MultiplayerLobby from './pages/MultiplayerLobby.tsx';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: 'single-player',
     element: <SinglePlayerGame />,
+  },
+  {
+    path: 'multi-player-lobby',
+    element: <MultiplayerLobby />,
   },
 ]);
 
