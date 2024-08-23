@@ -115,7 +115,7 @@ export default function CreateMultiplayerRoom({
           "
             disabled={roomName.length < 5}
           >
-            Create Room
+            Create
           </button>
         </div>
       </form>
