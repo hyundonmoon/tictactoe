@@ -16,7 +16,6 @@ export default function UserNicknameModal({
     e.preventDefault();
     if (nickname) {
       onSubmit(nickname);
-      closeModal();
     }
   };
 
@@ -69,10 +68,11 @@ export default function UserNicknameModal({
             Confirm
           </button>
           <button
+            type="button"
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded transition"
             onClick={closeModal}
           >
-            Close
+            Cancel
           </button>
         </div>
       </form>
