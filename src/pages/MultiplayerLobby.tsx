@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import UserNicknameModal from '../components/modals/UserNicknameModal';
+import CreateMultiplayerRoom from '../components/modals/CreateMultiplayerRoomModal';
 
 export default function MultiplayerLobby() {
   const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
+  const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false);
 
   return (
     <>
@@ -63,7 +65,12 @@ export default function MultiplayerLobby() {
 
             <div className="shrink-0 bg-white p-6 rounded-lg shadow-md">
               <div className="flex flex-col gap-4 h-full">
-                <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300">
+                <button
+                  className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
+                  onClick={() => {
+                    setIsCreateRoomModalOpen(true);
+                  }}
+                >
                   Create a room
                 </button>
                 <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300">
@@ -83,6 +90,13 @@ export default function MultiplayerLobby() {
           </div>
         </div>
       </div>
+
+      <CreateMultiplayerRoom
+        isOpen={isCreateRoomModalOpen}
+        closeModal={() => {
+          setIsCreateRoomModalOpen(false);
+        }}
+      />
 
       <UserNicknameModal
         isOpen={isNicknameModalOpen}
