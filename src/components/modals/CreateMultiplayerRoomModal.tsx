@@ -3,9 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 export default function CreateMultiplayerRoom({
   isOpen,
   closeModal,
+  onSubmit,
 }: {
   isOpen: boolean;
   closeModal: () => void;
+  onSubmit: (name: string, password: string, isPrivate: boolean) => void;
 }) {
   const [roomName, setRoomName] = useState('');
   const [password, setPassword] = useState('');
@@ -14,6 +16,7 @@ export default function CreateMultiplayerRoom({
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    onSubmit(roomName, password, makePrivate);
   };
 
   useEffect(() => {

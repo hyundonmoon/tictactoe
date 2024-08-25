@@ -1,12 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UserNicknameModal from '../components/modals/UserNicknameModal';
 import CreateMultiplayerRoom from '../components/modals/CreateMultiplayerRoomModal';
 import JoinRoomModal from '../components/modals/JoinRoomModal';
+import { useSocket } from '../contexts/SocketContext';
 
 export default function MultiplayerLobby() {
+  const socket = useSocket();
   const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false);
   const [isJoinRoomModalOpen, setIsJoinRoomModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('roomPending', ({ roomId }: { roomId: string }) => {
+        console.log('room created:', roomId);
+        // TODO: navigate to multi-player game page
+      });
+    }
+  }, [socket]);
+
+  if (!socket) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -104,6 +119,9 @@ export default function MultiplayerLobby() {
         isOpen={isCreateRoomModalOpen}
         closeModal={() => {
           setIsCreateRoomModalOpen(false);
+        }}
+        onSubmit={(name: string, password: string, isPrivate: boolean) => {
+          socket.emit('createRoom', { name, password, isPrivate });
         }}
       />
 

@@ -57,7 +57,7 @@ export default function LandingPage() {
         onSubmit={(nickname: string) => {
           localStorage.setItem('nickname', nickname);
           setIsNickNameModalOpen(false);
-          navigate('/multi-player-lobby');
+          navigate('/multi-player/lobby');
         }}
       />
     </>
