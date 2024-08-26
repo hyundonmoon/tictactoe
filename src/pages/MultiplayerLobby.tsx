@@ -6,15 +6,15 @@ import { useSocket } from '../contexts/SocketContext';
 import RoomList from '../components/MultiplayerLobby/RoomList';
 import useRoomList from '../hooks/useRoomList';
 import MultiplayerLobbySidebar from '../components/MultiplayerLobby/MultiplayerLobbySidebar';
+import { useNavigate } from 'react-router-dom';
 
 export default function MultiplayerLobby() {
-  const socket = useSocket();
+  const { socket, connected } = useSocket();
+  const navigate = useNavigate();
   const [isNicknameModalOpen, setNicknameModalOpen] = useState(false);
   const [isCreateRoomModalOpen, setCreateRoomModalOpen] = useState(false);
   const [isJoinRoomModalOpen, setJoinRoomModalOpen] = useState(false);
-  const [roomListFilter, setRoomListFilter] = useState<'waiting' | 'all'>(
-    'all',
-  );
+  const [roomListFilter] = useState<'waiting' | 'all'>('all');
   const {
     data: rooms,
     isPending,
@@ -22,19 +22,23 @@ export default function MultiplayerLobby() {
     refetch,
   } = useRoomList(roomListFilter);
 
-  const handleRoomItemClick = (id: string) => {
-    // TODO: navigate to game page with id as route param
-    console.log('Navigate to page: ', id);
+  const handleRoomItemClick = (roomId: string) => {
+    navigate(`../play/${roomId}`);
   };
 
   useEffect(() => {
-    if (socket) {
-      socket.on('roomPending', ({ roomId }: { roomId: string }) => {
-        console.log('room created:', roomId);
-        // TODO: navigate to multi-player game page
-      });
+    const handleRoomJoin = ({ roomId }: { roomId: string }) => {
+      console.log('room created:', roomId);
+      navigate(`../play/${roomId}`);
+    };
+    if (connected) {
+      socket?.on('roomPending', handleRoomJoin);
     }
-  }, [socket]);
+
+    return () => {
+      socket?.off('roomPending', handleRoomJoin);
+    };
+  }, [socket, connected]);
 
   if (!socket) {
     return <div>Loading...</div>;
@@ -67,7 +71,9 @@ export default function MultiplayerLobby() {
               {isPending ? (
                 <div>Loading...</div>
               ) : isError ? (
-                <div>Error when loading room list.</div>
+                <div className="flex-1 flex justify-center items-center text-gray-500">
+                  Error when loading room list.
+                </div>
               ) : (
                 <RoomList rooms={rooms} handleClick={handleRoomItemClick} />
               )}

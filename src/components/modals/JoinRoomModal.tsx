@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function JoinRoomModal({
   isOpen,
@@ -9,6 +10,7 @@ export default function JoinRoomModal({
 }) {
   const ref = useRef<HTMLDialogElement | null>(null);
   const [roomId, setRoomId] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen) {
@@ -34,7 +36,17 @@ export default function JoinRoomModal({
         <h2 className="text-xl font-semibold text-gray-800">Join a room</h2>
       </header>
       <div>
-        <form className="space-y-4" autoComplete="off">
+        <form
+          className="space-y-4"
+          autoComplete="off"
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            if (roomId.length) {
+              navigate(`../play/${roomId}`);
+            }
+          }}
+        >
           <div>
             <label
               htmlFor="room-id"

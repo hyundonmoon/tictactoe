@@ -3,29 +3,45 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const SocketContext = createContext<Socket | null>(null);
+const SocketContext = createContext<{
+  socket: Socket | null;
+  connected: boolean;
+}>({ socket: null, connected: false });
 const URL = 'http://localhost:3000';
 
 export function SocketProvider({ children }: { children: ReactNode }) {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const socket = useRef<Socket | null>(null);
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const newSocket = io(URL);
-    setSocket(newSocket);
+    if (socket.current === null) {
+      socket.current = io(URL);
+      console.log('new socket!!', socket.current);
+
+      socket.current.on('connect', () => {
+        console.log('socket connected!');
+        setConnected(true);
+      });
+    }
 
     return () => {
-      if (socket) {
-        socket.disconnect();
+      if (socket?.current?.connected) {
+        socket?.current?.disconnect();
+        socket.current = null;
+        setConnected(false);
       }
     };
   }, []);
 
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={{ socket: socket.current, connected }}>
+      {children}
+    </SocketContext.Provider>
   );
 }
 

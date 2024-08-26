@@ -7,6 +7,7 @@ import SinglePlayerGame from './pages/SinglePlayerGame.tsx';
 import MultiplayerLobby from './pages/MultiplayerLobby.tsx';
 import MultiplayerLayout from './layouts/MultiplayerLayout.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import MultiplayerGame from './pages/MultiPlayerGame.tsx';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         path: 'lobby',
         element: <MultiplayerLobby />,
       },
+      {
+        path: 'play/:gameRoomId',
+        element: <MultiplayerGame />,
+      },
     ],
   },
 ]);
@@ -32,9 +37,7 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  </StrictMode>,
+  <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+  </QueryClientProvider>,
 );
