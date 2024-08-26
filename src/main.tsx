@@ -6,6 +6,7 @@ import LandingPage from './pages/LandingPage.tsx';
 import SinglePlayerGame from './pages/SinglePlayerGame.tsx';
 import MultiplayerLobby from './pages/MultiplayerLobby.tsx';
 import MultiplayerLayout from './layouts/MultiplayerLayout.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const router = createBrowserRouter([
   {
@@ -28,8 +29,12 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </StrictMode>,
 );

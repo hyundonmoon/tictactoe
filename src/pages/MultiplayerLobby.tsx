@@ -3,12 +3,28 @@ import UserNicknameModal from '../components/modals/UserNicknameModal';
 import CreateMultiplayerRoom from '../components/modals/CreateMultiplayerRoomModal';
 import JoinRoomModal from '../components/modals/JoinRoomModal';
 import { useSocket } from '../contexts/SocketContext';
+import RoomList from '../components/RoomList';
+import useRoomList from '../hooks/useRoomList';
 
 export default function MultiplayerLobby() {
   const socket = useSocket();
   const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false);
   const [isJoinRoomModalOpen, setIsJoinRoomModalOpen] = useState(false);
+  const [roomListFilter, setRoomListFilter] = useState<'waiting' | 'all'>(
+    'all',
+  );
+  const {
+    data: rooms,
+    isPending,
+    isError,
+    refetch,
+  } = useRoomList(roomListFilter);
+
+  const handleRoomItemClick = (id: string) => {
+    // TODO: navigate to game page with id as route param
+    console.log('Navigate to page: ', id);
+  };
 
   useEffect(() => {
     if (socket) {
@@ -39,45 +55,21 @@ export default function MultiplayerLobby() {
                 <h2 className="text-xl font-semibold text-gray-800 flex-1">
                   Room List
                 </h2>
-                <button className="text-sm hover:font-bold">Refresh</button>
+                <button
+                  className="text-sm hover:font-bold"
+                  onClick={() => refetch()}
+                >
+                  Refresh
+                </button>
               </div>
 
-              <div className="flex-1 space-y-4 overflow-scroll">
-                <div className="p-4 bg-gray-50 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700">Room 1</h3>
-                  <p className="text-sm text-gray-600">Details about Room 1</p>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700">Room 2</h3>
-                  <p className="text-sm text-gray-600">Details about Room 2</p>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700">Room 2</h3>
-                  <p className="text-sm text-gray-600">Details about Room 2</p>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700">Room 2</h3>
-                  <p className="text-sm text-gray-600">Details about Room 2</p>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700">Room 2</h3>
-                  <p className="text-sm text-gray-600">Details about Room 2</p>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700">Room 2</h3>
-                  <p className="text-sm text-gray-600">Details about Room 2</p>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700">Room 2</h3>
-                  <p className="text-sm text-gray-600">Details about Room 2</p>
-                </div>
-              </div>
+              {isPending ? (
+                <div>Loading...</div>
+              ) : isError ? (
+                <div>Error when loading room list.</div>
+              ) : (
+                <RoomList rooms={rooms} handleClick={handleRoomItemClick} />
+              )}
             </div>
 
             <div className="shrink-0 bg-white p-6 rounded-lg shadow-md">
