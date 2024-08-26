@@ -3,14 +3,15 @@ import UserNicknameModal from '../components/modals/UserNicknameModal';
 import CreateMultiplayerRoom from '../components/modals/CreateMultiplayerRoomModal';
 import JoinRoomModal from '../components/modals/JoinRoomModal';
 import { useSocket } from '../contexts/SocketContext';
-import RoomList from '../components/RoomList';
+import RoomList from '../components/MultiplayerLobby/RoomList';
 import useRoomList from '../hooks/useRoomList';
+import MultiplayerLobbySidebar from '../components/MultiplayerLobby/MultiplayerLobbySidebar';
 
 export default function MultiplayerLobby() {
   const socket = useSocket();
-  const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
-  const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false);
-  const [isJoinRoomModalOpen, setIsJoinRoomModalOpen] = useState(false);
+  const [isNicknameModalOpen, setNicknameModalOpen] = useState(false);
+  const [isCreateRoomModalOpen, setCreateRoomModalOpen] = useState(false);
+  const [isJoinRoomModalOpen, setJoinRoomModalOpen] = useState(false);
   const [roomListFilter, setRoomListFilter] = useState<'waiting' | 'all'>(
     'all',
   );
@@ -72,37 +73,11 @@ export default function MultiplayerLobby() {
               )}
             </div>
 
-            <div className="shrink-0 bg-white p-6 rounded-lg shadow-md">
-              <div className="flex flex-col gap-4 h-full">
-                <button
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
-                  onClick={() => {
-                    setIsCreateRoomModalOpen(true);
-                  }}
-                >
-                  Create a room
-                </button>
-
-                <button
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
-                  onClick={() => {
-                    setIsJoinRoomModalOpen(true);
-                  }}
-                >
-                  Join a room
-                </button>
-
-                <div className="flex-1 hidden md:block"></div>
-                <button
-                  className="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
-                  onClick={() => {
-                    setIsNicknameModalOpen(true);
-                  }}
-                >
-                  Change nickname
-                </button>
-              </div>
-            </div>
+            <MultiplayerLobbySidebar
+              setCreateRoomModalOpen={setCreateRoomModalOpen}
+              setJoinRoomModalOpen={setJoinRoomModalOpen}
+              setNicknameModalOpen={setNicknameModalOpen}
+            />
           </div>
         </div>
       </div>
@@ -110,7 +85,7 @@ export default function MultiplayerLobby() {
       <CreateMultiplayerRoom
         isOpen={isCreateRoomModalOpen}
         closeModal={() => {
-          setIsCreateRoomModalOpen(false);
+          setCreateRoomModalOpen(false);
         }}
         onSubmit={(name: string, password: string, isPrivate: boolean) => {
           socket.emit('createRoom', { name, password, isPrivate });
@@ -120,18 +95,18 @@ export default function MultiplayerLobby() {
       <JoinRoomModal
         isOpen={isJoinRoomModalOpen}
         closeModal={() => {
-          setIsJoinRoomModalOpen(false);
+          setJoinRoomModalOpen(false);
         }}
       />
 
       <UserNicknameModal
         isOpen={isNicknameModalOpen}
         closeModal={() => {
-          setIsNicknameModalOpen(false);
+          setNicknameModalOpen(false);
         }}
         onSubmit={(nickname) => {
           localStorage.setItem('nickname', nickname);
-          setIsNicknameModalOpen(false);
+          setNicknameModalOpen(false);
         }}
       />
     </>

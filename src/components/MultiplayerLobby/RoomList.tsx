@@ -1,4 +1,4 @@
-import { Room } from '../types/socket.model';
+import { Room } from '../../types/socket.model';
 import RoomItem from './RoomItem';
 
 interface RoomListProps {

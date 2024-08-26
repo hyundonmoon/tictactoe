@@ -1,5 +1,5 @@
-import { Room } from '../types/socket.model';
-import lockIcon from '../assets/locked.svg';
+import { Room } from '../../types/socket.model';
+import lockIcon from '../../assets/locked.svg';
 
 interface RoomItemProps {
   room: Room;
