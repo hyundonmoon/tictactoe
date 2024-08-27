@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 import MultiplayerGameLoadingScreen from '../components/MultiplayerGame/LoadingScreen';
 import RequestPassword from '../components/MultiplayerGame/RequestPassword';
 import ErrorAlert from '../components/MultiplayerGame/ErrorAlert';
+import {
+  ROOM_CLIENT_TO_SERVER,
+  ROOM_SERVER_TO_CLIENT,
+} from '../constants/socket.constants';
 
 export default function MultiplayerGame() {
   const { gameRoomId } = useParams();
@@ -40,25 +44,31 @@ export default function MultiplayerGame() {
     };
 
     if (connected) {
-      socket?.on('roomJoined', handleRoomJoinedEvt);
-      socket?.on('roomFull', handleRoomFullEvt);
-      socket?.on('passwordRequired', handlePasswordRequired);
-      socket?.on('roomNotFound', handleRoomNotFound);
-      socket?.on('playerLeft', handlePlayerLeft);
-      socket?.on('passwordWrong', handleWrongPassword);
+      socket?.on(ROOM_SERVER_TO_CLIENT.JOINED, handleRoomJoinedEvt);
+      socket?.on(ROOM_SERVER_TO_CLIENT.FULL, handleRoomFullEvt);
+      socket?.on(
+        ROOM_SERVER_TO_CLIENT.PASSWORD_REQUIRED,
+        handlePasswordRequired,
+      );
+      socket?.on(ROOM_SERVER_TO_CLIENT.NOT_FOUND, handleRoomNotFound);
+      socket?.on(ROOM_SERVER_TO_CLIENT.PLAYER_LEFT, handlePlayerLeft);
+      socket?.on(ROOM_SERVER_TO_CLIENT.WRONG_PASSWORD, handleWrongPassword);
 
       socket?.emit('joinRoom', gameRoomId);
     }
 
     return () => {
-      socket?.off('roomJoined', handleRoomJoinedEvt);
-      socket?.off('roomFull', handleRoomFullEvt);
-      socket?.off('passwordRequired', handlePasswordRequired);
-      socket?.off('roomNotFound', handleRoomNotFound);
-      socket?.off('playerLeft', handlePlayerLeft);
-      socket?.off('passwordWrong', handleWrongPassword);
+      socket?.off(ROOM_SERVER_TO_CLIENT.JOINED, handleRoomJoinedEvt);
+      socket?.off(ROOM_SERVER_TO_CLIENT.FULL, handleRoomFullEvt);
+      socket?.off(
+        ROOM_SERVER_TO_CLIENT.PASSWORD_REQUIRED,
+        handlePasswordRequired,
+      );
+      socket?.off(ROOM_SERVER_TO_CLIENT.NOT_FOUND, handleRoomNotFound);
+      socket?.off(ROOM_SERVER_TO_CLIENT.PLAYER_LEFT, handlePlayerLeft);
+      socket?.off(ROOM_SERVER_TO_CLIENT.WRONG_PASSWORD, handleWrongPassword);
 
-      socket?.emit('leaveRoom', gameRoomId);
+      socket?.emit(ROOM_CLIENT_TO_SERVER.LEAVE, gameRoomId);
     };
   }, [socket, connected, gameRoomId]);
 
@@ -69,7 +79,11 @@ export default function MultiplayerGame() {
           wrongPassword={wrongPassword}
           onSubmit={(password: string) => {
             if (connected) {
-              socket?.emit('joinRoomWithPassword', gameRoomId, password);
+              socket?.emit(
+                ROOM_CLIENT_TO_SERVER.JOIN_PASSWORD,
+                gameRoomId,
+                password,
+              );
             }
           }}
         />

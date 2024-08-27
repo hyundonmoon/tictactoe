@@ -7,6 +7,7 @@ import RoomList from '../components/MultiplayerLobby/RoomList';
 import useRoomList from '../hooks/useRoomList';
 import MultiplayerLobbySidebar from '../components/MultiplayerLobby/MultiplayerLobbySidebar';
 import { useNavigate } from 'react-router-dom';
+import { ROOM_SERVER_TO_CLIENT } from '../constants/socket.constants';
 
 export default function MultiplayerLobby() {
   const { socket, connected } = useSocket();
@@ -28,15 +29,14 @@ export default function MultiplayerLobby() {
 
   useEffect(() => {
     const handleRoomJoin = ({ roomId }: { roomId: string }) => {
-      console.log('room created:', roomId);
       navigate(`../play/${roomId}`);
     };
     if (connected) {
-      socket?.on('roomPending', handleRoomJoin);
+      socket?.on(ROOM_SERVER_TO_CLIENT.PENDING, handleRoomJoin);
     }
 
     return () => {
-      socket?.off('roomPending', handleRoomJoin);
+      socket?.off(ROOM_SERVER_TO_CLIENT.PENDING, handleRoomJoin);
     };
   }, [socket, connected]);
 
