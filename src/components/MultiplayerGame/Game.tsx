@@ -1,4 +1,5 @@
 import useMultiplayerGameState from '../../hooks/useMultiplayerGameState';
+import AbortAlert from './AbortAlert';
 import MultiplayerBoard from './MultiplayerBoard';
 import MultiplayerGameOverModal from './MultiplayerGameOverModal';
 
@@ -18,7 +19,18 @@ export default function Game({ roomId, myId }: GameProps) {
     players,
     myPlayer,
     makeMove,
+    isAborted,
   } = useMultiplayerGameState(roomId, myId);
+
+  if (isAborted) {
+    return (
+      <AbortAlert
+        handleSubmit={() => {
+          playAgain();
+        }}
+      />
+    );
+  }
 
   return (
     <>

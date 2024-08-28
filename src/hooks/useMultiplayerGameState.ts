@@ -21,6 +21,7 @@ export default function useMultiplayerGameState(roomId: string, myId: string) {
     { id: string; symbol: 'O' | 'X'; name: string }[]
   >([]);
   const [myPlayer, setMyPlayer] = useState<Player | null>(null);
+  const [isAborted, setAborted] = useState(false);
 
   const playAgain = () => {
     socket?.emit('GAME::PLAY_AGAIN');
@@ -36,6 +37,7 @@ export default function useMultiplayerGameState(roomId: string, myId: string) {
     const handleGameStart = ({
       isStarted,
       isFinished,
+      isAborted,
       isDraw,
       winner,
       board,
@@ -49,6 +51,7 @@ export default function useMultiplayerGameState(roomId: string, myId: string) {
       setIsGameOver(isFinished);
       setIsDraw(isDraw);
       setGameStarted(isStarted);
+      setAborted(isAborted);
 
       const me = players.find((player) => player.id === myId);
 
@@ -82,10 +85,15 @@ export default function useMultiplayerGameState(roomId: string, myId: string) {
       setWinner(winner);
     };
 
+    const handleGameAbort = ({ isAborted }: GameplayData) => {
+      setAborted(isAborted);
+    };
+
     if (socket && connected) {
       socket?.on(GAME_SERVER_TO_CLIENT.START, handleGameStart);
       socket?.on(GAME_SERVER_TO_CLIENT.ACTION, handleGameAction);
       socket?.on(GAME_SERVER_TO_CLIENT.OVER, handleGameOver);
+      socket?.on(GAME_SERVER_TO_CLIENT.ABORT, handleGameAbort);
 
       socket?.emit(
         GAME_CLIENT_TO_SERVER.READY,
@@ -99,6 +107,7 @@ export default function useMultiplayerGameState(roomId: string, myId: string) {
       socket?.off(GAME_SERVER_TO_CLIENT.START, handleGameStart);
       socket?.off(GAME_SERVER_TO_CLIENT.ACTION, handleGameAction);
       socket?.off(GAME_SERVER_TO_CLIENT.OVER, handleGameOver);
+      socket?.off(GAME_SERVER_TO_CLIENT.ABORT, handleGameAbort);
     };
   }, [socket, connected, roomId, myId]);
 
@@ -113,5 +122,6 @@ export default function useMultiplayerGameState(roomId: string, myId: string) {
     players,
     myPlayer,
     makeMove,
+    isAborted,
   };
 }
