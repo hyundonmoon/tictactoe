@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
-import UserNicknameModal from '../components/modals/UserNicknameModal';
+import { useNavigate } from 'react-router-dom';
 import CreateMultiplayerRoom from '../components/modals/CreateMultiplayerRoomModal';
 import JoinRoomModal from '../components/modals/JoinRoomModal';
-import { useSocket } from '../contexts/SocketContext';
-import RoomList from '../components/MultiplayerLobby/RoomList';
-import useRoomList from '../hooks/useRoomList';
+import UserNicknameModal from '../components/modals/UserNicknameModal';
 import MultiplayerLobbySidebar from '../components/MultiplayerLobby/MultiplayerLobbySidebar';
-import { useNavigate } from 'react-router-dom';
-import { ROOM_SERVER_TO_CLIENT } from '../constants/socket.constants';
+import RoomList from '../components/MultiplayerLobby/RoomList';
+import {
+  ROOM_CLIENT_TO_SERVER,
+  ROOM_SERVER_TO_CLIENT,
+} from '../constants/socket.constants';
+import { useSocket } from '../contexts/SocketContext';
+import useRoomList from '../hooks/useRoomList';
 
 export default function MultiplayerLobby() {
   const { socket, connected } = useSocket();
@@ -94,7 +97,11 @@ export default function MultiplayerLobby() {
           setCreateRoomModalOpen(false);
         }}
         onSubmit={(name: string, password: string, isPrivate: boolean) => {
-          socket.emit('createRoom', { name, password, isPrivate });
+          socket.emit(ROOM_CLIENT_TO_SERVER.CREATE, {
+            name,
+            password,
+            isPrivate,
+          });
         }}
       />
 

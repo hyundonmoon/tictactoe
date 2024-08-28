@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useSocket } from '../contexts/SocketContext';
 import { useParams } from 'react-router-dom';
+import ErrorAlert from '../components/MultiplayerGame/ErrorAlert';
+import Game from '../components/MultiplayerGame/Game';
 import MultiplayerGameLoadingScreen from '../components/MultiplayerGame/LoadingScreen';
 import RequestPassword from '../components/MultiplayerGame/RequestPassword';
-import ErrorAlert from '../components/MultiplayerGame/ErrorAlert';
 import {
   ROOM_CLIENT_TO_SERVER,
   ROOM_SERVER_TO_CLIENT,
 } from '../constants/socket.constants';
+import { useSocket } from '../contexts/SocketContext';
 
 export default function MultiplayerGame() {
   const { gameRoomId } = useParams();
@@ -54,7 +55,7 @@ export default function MultiplayerGame() {
       socket?.on(ROOM_SERVER_TO_CLIENT.PLAYER_LEFT, handlePlayerLeft);
       socket?.on(ROOM_SERVER_TO_CLIENT.WRONG_PASSWORD, handleWrongPassword);
 
-      socket?.emit('joinRoom', gameRoomId);
+      socket?.emit(ROOM_CLIENT_TO_SERVER.JOIN, gameRoomId);
     }
 
     return () => {
@@ -67,10 +68,22 @@ export default function MultiplayerGame() {
       socket?.off(ROOM_SERVER_TO_CLIENT.NOT_FOUND, handleRoomNotFound);
       socket?.off(ROOM_SERVER_TO_CLIENT.PLAYER_LEFT, handlePlayerLeft);
       socket?.off(ROOM_SERVER_TO_CLIENT.WRONG_PASSWORD, handleWrongPassword);
-
-      socket?.emit(ROOM_CLIENT_TO_SERVER.LEAVE, gameRoomId);
     };
   }, [socket, connected, gameRoomId]);
+
+  useEffect(() => {
+    return () => {
+      socket?.emit(ROOM_CLIENT_TO_SERVER.LEAVE, gameRoomId);
+    };
+  }, []);
+
+  if (!socket) {
+    return (
+      <div className="h-full min-h-screen flex flex-col justify-center items-center p-4 bg-gray-200">
+        <MultiplayerGameLoadingScreen />
+      </div>
+    );
+  }
 
   if (!joined) {
     if (needsPassword) {
@@ -117,7 +130,7 @@ export default function MultiplayerGame() {
 
   return (
     <>
-      <div>Game screen</div>
+      <Game roomId={gameRoomId ?? ''} myId={socket.id ?? ''} />
     </>
   );
 }

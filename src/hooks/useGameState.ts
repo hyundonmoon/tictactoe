@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import GAME_RESULTS from '../constants/gameResult.constants';
 import { BoardState } from '../types/boardState.model';
 import getGameState from '../utils/getGameState';
 import useGameStats from './useGameStats';
-import GAME_RESULTS from '../constants/gameResult.constants';
 
 export default function useGameState() {
   const [boardState, setBoardState] = useState(
