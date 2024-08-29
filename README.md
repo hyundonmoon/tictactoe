@@ -1,50 +1,55 @@
-# React + TypeScript + Vite
+# Tic-Tac-Toe Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This project is a straightforward implementation of the classic Tic-Tac-Toe game, meant as a personal refresher in modern web development tools and practices. The focus was on revisiting and solidifying my understanding of React, TypeScript, React Query, and Socket.io. The application features both single-player and multiplayer modes, providing a practical way to explore real-time communication and state management in a React-based environment.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Single Player Mode**: Play against an unbeatable AI opponent.
+- **Multiplayer Mode**
+  - Create and join rooms.
+  - Password-protected rooms.
+  - Real-time gameplay via Socket.io.
+  - Responsive and intuitive UI using Tailwind CSS.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Built with
 
-- Configure the top-level `parserOptions` property like this:
+- **Frontend**: React, TypeScript, Tailwind CSS, React Query
+- **Backend**: Node.js, TypeScript, Socket.io
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Prerequisites
+
+- To play a multi-player game locally, ensure the backend server is running. The backend repo can be found [here](https://github.com/hyundonmoon/tictactoe-server)
+- Ensure you are using Node.js version 20.6.0 or above.
+
+## Installation
+
+1. Clone repo
+
+```bash
+git clone https://github.com/hyundonmoon/tictactoe.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Install dependencies
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+cd ./tictactoe
+npm i
 ```
+
+3. Run locally
+
+```bash
+npm run dev
+```
+
+4. Play
+
+- Visit http://localhost:5173.
+
+## Roadmap
+
+- [ ] Use absolute paths to import modules
+- [ ] Add scoring system for multi-player games
+- [ ] Change app folder structure into a feature-driven structure
