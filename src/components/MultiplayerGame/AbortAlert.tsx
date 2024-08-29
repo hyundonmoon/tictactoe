@@ -12,7 +12,6 @@ export default function AbortAlert({ handleSubmit }: AbortAlertProps) {
       <form
         className="bg-white rounded-lg shadow-lg p-6 w-96"
         onSubmit={(e) => {
-          console.log('submitted');
           e.preventDefault();
           handleSubmit();
         }}
@@ -28,6 +27,13 @@ export default function AbortAlert({ handleSubmit }: AbortAlertProps) {
         </p>
         <div className="flex justify-end gap-4">
           <button
+            type="submit"
+            className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
+          >
+            Wait
+          </button>
+
+          <button
             type="button"
             onClick={() => {
               navigate('../lobby');
@@ -35,13 +41,6 @@ export default function AbortAlert({ handleSubmit }: AbortAlertProps) {
             className="bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
           >
             Leave Room
-          </button>
-
-          <button
-            type="submit"
-            className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
-          >
-            Wait
           </button>
         </div>
       </form>

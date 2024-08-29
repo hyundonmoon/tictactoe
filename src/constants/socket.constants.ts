@@ -24,9 +24,11 @@ export const GAME_SERVER_TO_CLIENT = {
   OVER: 'GAME::OVER',
   ACTION: 'GAME::ACTION',
   ABORT: 'GAME::ABORT',
+  PENDING: 'GAME::PENDING',
 } as const;
 
 export const GAME_CLIENT_TO_SERVER = {
-  READY: 'GAME::READY',
+  JOIN: 'GAME::JOIN',
+  PLAY_AGAIN: 'GAME::PLAY_AGAIN',
   MAKE_MOVE: 'GAME::MAKE_MOVE',
 } as const;

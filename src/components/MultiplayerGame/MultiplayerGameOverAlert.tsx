@@ -1,68 +1,46 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GAME_RESULTS from '../../constants/gameResult.constants';
+import { useSocket } from '../../contexts/SocketContext';
 import { GameResult } from '../../types/gameStats.model';
 import { Player } from '../../types/socket.model';
 import getGameOverGif from '../../utils/getGameOverGif';
 import getGameOverMsg from '../../utils/getGameOverMsg';
 
 interface MultiplayerGameOverModalProps {
-  isOpen: boolean;
-  isGameOver: boolean; // same value as isOpen, included just for clarity
   winner: Player | null;
-  myPlayer: Player | null;
   handleSubmit: () => void;
 }
 
-export default function MultiplayerGameOverModal({
-  isOpen,
-  isGameOver,
+export default function MultiplayerGameOverAlert({
   winner,
-  myPlayer,
   handleSubmit,
 }: MultiplayerGameOverModalProps) {
   const navigate = useNavigate();
-  const ref = useRef<HTMLDialogElement | null>(null);
-  const [shouldNavigate, setShouldNavigate] = useState(true);
+  const { socket } = useSocket();
   const [result, setResult] = useState<GameResult | null>();
 
   useEffect(() => {
-    if (isOpen) {
-      ref.current?.showModal();
-    }
-  }, [ref.current, isOpen]);
-
-  useEffect(() => {
-    if (isGameOver && myPlayer !== null) {
+    if (socket) {
+      console.log({ winner, socket });
       if (winner === null) {
         setResult(GAME_RESULTS.DRAW);
-      } else if (winner.id === myPlayer?.id) {
+      } else if (winner.id === socket?.id) {
         setResult(GAME_RESULTS.WIN);
       } else {
         setResult(GAME_RESULTS.LOSS);
       }
-    } else {
-      setResult(null);
     }
-  }, [isGameOver, winner, myPlayer]);
+  }, [winner, socket]);
 
   return (
-    <dialog
-      ref={ref}
-      className="text-center w-10/12 max-w-lg p-6 bg-white rounded-xl shadow-lg border border-gray-200"
-      onClose={() => {
-        if (shouldNavigate) {
-          navigate('../lobby');
-        }
-      }}
-    >
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
       {result && (
         <form
+          className="bg-white rounded-lg shadow-lg p-6 w-96"
           onSubmit={(e) => {
             e.preventDefault();
-            setShouldNavigate(false);
             handleSubmit();
-            ref.current?.close();
           }}
         >
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
@@ -86,7 +64,7 @@ export default function MultiplayerGameOverModal({
               type="button"
               className="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none"
               onClick={() => {
-                ref?.current?.close();
+                navigate('../lobby');
               }}
             >
               Leave Room
@@ -94,6 +72,6 @@ export default function MultiplayerGameOverModal({
           </div>
         </form>
       )}
-    </dialog>
+    </div>
   );
 }

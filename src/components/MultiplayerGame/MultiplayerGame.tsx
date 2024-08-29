@@ -1,28 +1,19 @@
-import useMultiplayerGameState from '../../hooks/useMultiplayerGameState';
+import { useSocket } from '../../contexts/SocketContext';
+import useMultiplayerGame from '../../hooks/useMultiplayerGame';
 import AbortAlert from './AbortAlert';
+import MultiplayerGameLoadingScreen from './LoadingScreen';
 import MultiplayerBoard from './MultiplayerBoard';
-import MultiplayerGameOverModal from './MultiplayerGameOverModal';
+import MultiplayerGameOverAlert from './MultiplayerGameOverAlert';
 
 interface GameProps {
   roomId: string;
-  myId: string;
 }
 
-export default function Game({ roomId, myId }: GameProps) {
-  const {
-    boardState,
-    isGameOver,
-    winner,
-    currentTurn,
-    playAgain,
-    isGameStarted,
-    players,
-    myPlayer,
-    makeMove,
-    isAborted,
-  } = useMultiplayerGameState(roomId, myId);
+export default function MulitplayerGame({ roomId }: GameProps) {
+  const { socket } = useSocket();
+  const [gameState, makeMove, playAgain] = useMultiplayerGame(roomId);
 
-  if (isAborted) {
+  if (gameState.status === 'aborted') {
     return (
       <AbortAlert
         handleSubmit={() => {
@@ -32,13 +23,38 @@ export default function Game({ roomId, myId }: GameProps) {
     );
   }
 
+  if (gameState.status === 'over') {
+    return (
+      <MultiplayerGameOverAlert
+        winner={gameState.winner}
+        handleSubmit={() => {
+          playAgain();
+        }}
+      />
+    );
+  }
+
+  if (gameState.status === 'pending') {
+    return (
+      <div className="h-full min-h-screen flex flex-col justify-center items-center p-4 bg-gray-200">
+        <MultiplayerGameLoadingScreen
+          intervalMessages={[
+            'Waiting for opponent.',
+            'Waiting for opponent..',
+            'Waiting for opponent...',
+          ]}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
         <div className="flex justify-center gap-4 mb-4">
-          {players.map((player, idx) => {
-            const isCurrentTurn = player.id === currentTurn?.id;
-            const isMe = player.id === myId;
+          {gameState.players.map((player, idx) => {
+            const isCurrentTurn = player.id === gameState.currentTurn?.id;
+            const isMe = player.id === socket?.id;
 
             return (
               <div
@@ -71,25 +87,13 @@ export default function Game({ roomId, myId }: GameProps) {
         </div>
 
         <MultiplayerBoard
-          boardState={boardState}
-          isGameStarted={isGameStarted}
-          isGameOver={isGameOver}
-          myPlayer={myPlayer}
-          currentTurn={currentTurn}
+          boardState={gameState.board}
+          currentTurn={gameState.currentTurn}
+          players={gameState.players}
           handleClick={makeMove}
           roomId={roomId}
         />
       </div>
-
-      <MultiplayerGameOverModal
-        isOpen={isGameOver}
-        isGameOver={isGameOver}
-        winner={winner}
-        myPlayer={myPlayer}
-        handleSubmit={() => {
-          playAgain();
-        }}
-      />
     </>
   );
 }
