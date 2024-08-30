@@ -16,7 +16,7 @@ This project is a straightforward implementation of the classic Tic-Tac-Toe game
 ## Built with
 
 - **Frontend**: React, TypeScript, Tailwind CSS, React Query
-- **Backend**: Node.js, TypeScript, Socket.io
+- **Backend**: Node.js, Express, Socket.io
 
 ## Prerequisites
 
