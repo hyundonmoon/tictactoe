@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import CreateMultiplayerRoom from '../components/modals/CreateMultiplayerRoomModal';
 import JoinRoomModal from '../components/modals/JoinRoomModal';
 import UserNicknameModal from '../components/modals/UserNicknameModal';
+import MultiplayerGameLoadingScreen from '../components/MultiplayerGame/LoadingScreen';
 import MultiplayerLobbySidebar from '../components/MultiplayerLobby/MultiplayerLobbySidebar';
 import RoomList from '../components/MultiplayerLobby/RoomList';
 import {
@@ -43,8 +44,19 @@ export default function MultiplayerLobby() {
     };
   }, [socket, connected]);
 
-  if (!socket) {
-    return <div>Loading...</div>;
+  if (true) {
+    return (
+      <div className="h-full min-h-screen flex flex-col justify-center items-center p-4 bg-gray-200">
+        <MultiplayerGameLoadingScreen
+          intervalMessages={[
+            'Joining lobby.',
+            'Joining lobby..',
+            'Joining lobby...',
+          ]}
+          note="This may take up to a minute if the server has been idle for a while — my hosting service's free-tier isn't the fastest, but it gets the job done!"
+        />
+      </div>
+    );
   }
 
   return (
