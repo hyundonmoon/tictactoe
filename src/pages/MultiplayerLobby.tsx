@@ -44,7 +44,7 @@ export default function MultiplayerLobby() {
     };
   }, [socket, connected]);
 
-  if (true) {
+  if (!socket) {
     return (
       <div className="h-full min-h-screen flex flex-col justify-center items-center p-4 bg-gray-200">
         <MultiplayerGameLoadingScreen
