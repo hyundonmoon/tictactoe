@@ -26,8 +26,12 @@ export default function MultiplayerGameLoadingScreen({
       }, 700);
     }
 
-    return () => clearInterval(interval);
-  }, [intervalMessages]);
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [loadingMessage, intervalMessages]);
 
   return (
     <div className="w-full max-w-80 bg-gray-100 p-8 rounded-lg shadow-lg text-gray-700 space-y-1">
