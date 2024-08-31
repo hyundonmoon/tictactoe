@@ -36,7 +36,7 @@ export default function MultiplayerBoard({
       {boardState.map((value, idx) => (
         <button
           key={idx}
-          className={`w-36 h-36 p-8 bg-white shadow-md shadow-gray-400 cursor-pointer rounded-3xl flex justify-center items-center overflow-hidden disabled:shadow-inner disabled:shadow-gray-600 disabled:bg-gray-50 disabled:cursor-not-allowed hover:bg-gray-50 ${
+          className={`w-24 h-24 lg:w-36 lg:h-36 p-6 lg:p-8 bg-white shadow-md shadow-gray-400 cursor-pointer rounded-3xl flex justify-center items-center overflow-hidden disabled:shadow-inner disabled:shadow-gray-600 disabled:bg-gray-50 disabled:cursor-not-allowed hover:bg-gray-50 ${
             !!myPlayer && currentTurn.id === socket.id && value === ''
               ? 'hover:bg-blue-50'
               : ''
