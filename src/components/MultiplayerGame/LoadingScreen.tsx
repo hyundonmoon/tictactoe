@@ -22,6 +22,7 @@ export default function MultiplayerGameLoadingScreen({
     } else {
       interval = setInterval(() => {
         index = (index + 1) % intervalMessages.length;
+        console.log('set next: ', { index, message: intervalMessages[index] });
         setLoadingMessage(intervalMessages[index]);
       }, 700);
     }
@@ -31,7 +32,7 @@ export default function MultiplayerGameLoadingScreen({
         clearInterval(interval);
       }
     };
-  }, [loadingMessage, intervalMessages]);
+  }, [intervalMessages]);
 
   return (
     <div className="w-full max-w-80 bg-gray-100 p-8 rounded-lg shadow-lg text-gray-700 space-y-1">
