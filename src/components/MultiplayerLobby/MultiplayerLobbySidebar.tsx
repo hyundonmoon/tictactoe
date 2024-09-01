@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import MultiplayerLobbySidebarButton from './MultiplayerLobbySiderbarButton';
 
 interface MultiplayerLobbySidebarProps {
   setCreateRoomModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,41 +15,45 @@ export default function MultiplayerLobbySidebar({
   const navigate = useNavigate();
 
   return (
-    <div className="shrink-0 bg-white p-6 rounded-lg shadow-md">
-      <div className="flex flex-col gap-4 h-full">
-        <button
-          className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
-          onClick={() => {
+    <div className="shrink-0 bg-white p-4 rounded-lg shadow-md md:p-6">
+      <div className="flex flex-col gap-2 h-full md:gap-4">
+        <MultiplayerLobbySidebarButton
+          baseColorClass="bg-cyan-600"
+          hoverColorClass="bg-cyan-700"
+          handleClick={() => {
             setCreateRoomModalOpen(true);
           }}
-        >
-          Create a room
-        </button>
+          text="Create a room"
+        />
 
-        <button
-          className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
-          onClick={() => {
+        <MultiplayerLobbySidebarButton
+          baseColorClass="bg-cyan-600"
+          hoverColorClass="bg-cyan-700"
+          handleClick={() => {
             setJoinRoomModalOpen(true);
           }}
-        >
-          Join a room
-        </button>
+          text="Join a room"
+        />
 
         <div className="flex-1 hidden md:block"></div>
-        <button
-          className="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
-          onClick={() => {
+
+        <MultiplayerLobbySidebarButton
+          baseColorClass="bg-rose-600"
+          hoverColorClass="bg-rose-700"
+          handleClick={() => {
             setNicknameModalOpen(true);
           }}
-        >
-          Change nickname
-        </button>
-        <button
-          className="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300"
-          onClick={() => navigate('/')}
-        >
-          Go Back
-        </button>
+          text="Change nickname"
+        />
+
+        <MultiplayerLobbySidebarButton
+          baseColorClass="bg-gray-500"
+          hoverColorClass="bg-gray-600"
+          handleClick={() => {
+            navigate('/');
+          }}
+          text="Go back"
+        />
       </div>
     </div>
   );

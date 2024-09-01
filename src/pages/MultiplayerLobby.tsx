@@ -62,21 +62,21 @@ export default function MultiplayerLobby() {
   return (
     <>
       <div className="h-full min-h-screen flex flex-col justify-center items-center p-4 bg-gray-200">
-        <div className="flex flex-col w-full max-w-4xl h-full max-h-[700px] bg-gray-100 p-8 rounded-lg shadow-lg overflow-hidden">
-          <header className="mb-6">
-            <h1 className="text-2xl text-gray-900 font-bold">
+        <div className="flex flex-col w-full max-w-4xl h-full max-h-[700px] bg-gray-100 p-4 rounded-lg shadow-lg overflow-hidden md:p-8">
+          <header className="mb-4 md:mb-6">
+            <h1 className="text:lg md:text-2xl text-gray-900 font-bold">
               Find & Join a Game
             </h1>
           </header>
 
-          <div className="min-h-0 flex flex-col md:flex-row gap-6 flex-1">
-            <div className="flex-1 flex flex-col bg-white p-6 rounded-lg shadow-md overflow-hidden">
+          <div className="min-h-0 flex flex-col md:flex-row gap-4 flex-1 md:gap-6">
+            <div className="flex-1 flex flex-col bg-white p-4 rounded-lg shadow-md overflow-hidden mid:p-6">
               <div className="flex justify-between items-center mb-4 pb-2 border-b-2 border-dashed">
-                <h2 className="text-xl font-semibold text-gray-800 flex-1">
+                <h2 className="text-md md:text-xl font-semibold text-gray-800 flex-1">
                   Room List
                 </h2>
                 <button
-                  className="text-sm hover:font-bold"
+                  className="text-xs md:text-sm hover:font-bold"
                   onClick={() => refetch()}
                 >
                   Refresh

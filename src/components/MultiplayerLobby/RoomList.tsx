@@ -9,7 +9,7 @@ interface RoomListProps {
 export default function RoomList({ rooms, handleClick }: RoomListProps) {
   if (!rooms?.length) {
     return (
-      <div className="flex-1 flex justify-center items-center text-gray-500">
+      <div className="flex-1 flex justify-center items-center text-gray-500 text-sm md:text-base">
         No rooms available.
       </div>
     );
