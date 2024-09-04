@@ -2,13 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import MultiplayerLobbySidebarButton from './MultiplayerLobbySiderbarButton';
 
 interface MultiplayerLobbySidebarProps {
-  setCreateRoomModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  openCreateRoomModal: () => void;
   setJoinRoomModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setNicknameModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function MultiplayerLobbySidebar({
-  setCreateRoomModalOpen,
+  openCreateRoomModal,
   setJoinRoomModalOpen,
   setNicknameModalOpen,
 }: MultiplayerLobbySidebarProps) {
@@ -21,7 +21,7 @@ export default function MultiplayerLobbySidebar({
           baseColorClass="bg-cyan-600"
           hoverColorClass="bg-cyan-700"
           handleClick={() => {
-            setCreateRoomModalOpen(true);
+            openCreateRoomModal();
           }}
           text="Create a room"
         />

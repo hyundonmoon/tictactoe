@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CreateMultiplayerRoom from '../components/modals/CreateMultiplayerRoomModal';
 import JoinRoomModal from '../components/modals/JoinRoomModal';
@@ -16,8 +16,12 @@ export default function MultiplayerLobby() {
   const { socket, connected } = useSocket();
   const navigate = useNavigate();
   const [isNicknameModalOpen, setNicknameModalOpen] = useState(false);
-  const [isCreateRoomModalOpen, setCreateRoomModalOpen] = useState(false);
   const [isJoinRoomModalOpen, setJoinRoomModalOpen] = useState(false);
+  const createModalRoomRef = useRef<HTMLDialogElement | null>(null);
+
+  const openCreateRoomModal = useCallback(() => {
+    createModalRoomRef.current?.showModal();
+  }, []);
 
   useEffect(() => {
     const handleRoomJoin = ({ roomId }: { roomId: string }) => {
@@ -60,7 +64,7 @@ export default function MultiplayerLobby() {
           <div className="min-h-0 flex flex-col md:flex-row gap-4 flex-1 md:gap-6">
             <MultiplayerLobbyMain />
             <MultiplayerLobbySidebar
-              setCreateRoomModalOpen={setCreateRoomModalOpen}
+              openCreateRoomModal={openCreateRoomModal}
               setJoinRoomModalOpen={setJoinRoomModalOpen}
               setNicknameModalOpen={setNicknameModalOpen}
             />
@@ -69,10 +73,7 @@ export default function MultiplayerLobby() {
       </div>
 
       <CreateMultiplayerRoom
-        isOpen={isCreateRoomModalOpen}
-        closeModal={() => {
-          setCreateRoomModalOpen(false);
-        }}
+        ref={createModalRoomRef}
         onSubmit={(name: string, password: string, isPrivate: boolean) => {
           socket.emit(ROOM_CLIENT_TO_SERVER.CREATE, {
             name,
