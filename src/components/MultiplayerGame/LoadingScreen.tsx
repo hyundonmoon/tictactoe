@@ -17,12 +17,11 @@ export default function MultiplayerGameLoadingScreen({
     let index = 0;
     let interval: ReturnType<typeof setInterval>;
 
-    if (!loadingMessage) {
-      setLoadingMessage(intervalMessages[0]);
-    } else {
+    setLoadingMessage(intervalMessages[0]);
+
+    if (intervalMessages.length > 1) {
       interval = setInterval(() => {
         index = (index + 1) % intervalMessages.length;
-        console.log('set next: ', { index, message: intervalMessages[index] });
         setLoadingMessage(intervalMessages[index]);
       }, 700);
     }
