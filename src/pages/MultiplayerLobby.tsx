@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CreateMultiplayerRoom from '../components/modals/CreateMultiplayerRoomModal';
 import JoinRoomModal from '../components/modals/JoinRoomModal';
@@ -15,9 +15,9 @@ import { useSocket } from '../contexts/SocketContext';
 export default function MultiplayerLobby() {
   const { socket, connected } = useSocket();
   const navigate = useNavigate();
-  const [isNicknameModalOpen, setNicknameModalOpen] = useState(false);
   const createModalRoomRef = useRef<HTMLDialogElement | null>(null);
   const joinRoomModalRef = useRef<HTMLDialogElement | null>(null);
+  const nicknameModalRef = useRef<HTMLDialogElement | null>(null);
 
   const openCreateRoomModal = useCallback(() => {
     createModalRoomRef.current?.showModal();
@@ -25,6 +25,10 @@ export default function MultiplayerLobby() {
 
   const openJoinRoomModal = useCallback(() => {
     joinRoomModalRef.current?.showModal();
+  }, []);
+
+  const openNicknameModal = useCallback(() => {
+    nicknameModalRef.current?.showModal();
   }, []);
 
   useEffect(() => {
@@ -70,7 +74,7 @@ export default function MultiplayerLobby() {
             <MultiplayerLobbySidebar
               openCreateRoomModal={openCreateRoomModal}
               openJoinRoomModal={openJoinRoomModal}
-              setNicknameModalOpen={setNicknameModalOpen}
+              openNicknameModal={openNicknameModal}
             />
           </div>
         </div>
@@ -89,16 +93,7 @@ export default function MultiplayerLobby() {
 
       <JoinRoomModal ref={joinRoomModalRef} />
 
-      <UserNicknameModal
-        isOpen={isNicknameModalOpen}
-        closeModal={() => {
-          setNicknameModalOpen(false);
-        }}
-        onSubmit={(nickname) => {
-          localStorage.setItem('nickname', nickname);
-          setNicknameModalOpen(false);
-        }}
-      />
+      <UserNicknameModal ref={nicknameModalRef} />
     </>
   );
 }
