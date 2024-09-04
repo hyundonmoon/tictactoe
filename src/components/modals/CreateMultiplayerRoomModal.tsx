@@ -16,7 +16,7 @@ export default function CreateMultiplayerRoom({
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    onSubmit(roomName, password, makePrivate);
+    onSubmit(roomName.trim(), password, makePrivate);
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function CreateMultiplayerRoom({
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={roomName}
             onChange={(e) => {
-              setRoomName(e.target.value?.trim() ?? roomName);
+              setRoomName(e.target.value ?? '');
             }}
           />
         </div>
@@ -116,7 +116,7 @@ export default function CreateMultiplayerRoom({
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition
           disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed
           "
-            disabled={roomName.length < 5}
+            disabled={roomName.trim().length < 5}
           >
             Create
           </button>
