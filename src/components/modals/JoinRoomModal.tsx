@@ -7,7 +7,7 @@ export default forwardRef<HTMLDialogElement>(function JoinRoomModal(_, ref) {
 
   return (
     <dialog
-      className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full"
+      className="bg-white p-6 rounded-lg shadow-lg max-w-md w-11/12"
       ref={ref}
       onClose={() => {
         setRoomId('');
@@ -52,6 +52,16 @@ export default forwardRef<HTMLDialogElement>(function JoinRoomModal(_, ref) {
 
           <div className="mt-6 flex justify-end space-x-3">
             <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition
+          disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed
+          "
+              disabled={roomId.length !== 36}
+            >
+              Join
+            </button>
+
+            <button
               type="button"
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md transition"
               onClick={() => {
@@ -61,15 +71,6 @@ export default forwardRef<HTMLDialogElement>(function JoinRoomModal(_, ref) {
               }}
             >
               Cancel
-            </button>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition
-          disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed
-          "
-              disabled={roomId.length !== 36}
-            >
-              Join
             </button>
           </div>
         </form>

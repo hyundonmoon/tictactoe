@@ -20,9 +20,14 @@ export default forwardRef<HTMLDialogElement>(
     return (
       <dialog
         ref={ref}
-        className="p-6 rounded-lg shadow-lg bg-white text-center max-w-md w-11/12"
+        className="bg-white p-6 rounded-lg shadow-lg max-w-md w-11/12"
       >
-        <h2 className="text-2xl font-semibold mb-4">Enter Your Nickname</h2>
+        <header className="mb-4">
+          <h2 className="text-xl font-semibold text-gray-800">
+            Enter your nickname
+          </h2>
+        </header>
+
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -37,7 +42,8 @@ export default forwardRef<HTMLDialogElement>(
               setNickname(e.target.value?.trim());
             }}
           />
-          <div className="flex justify-center space-x-4">
+
+          <div className="mt-6 flex justify-end space-x-3">
             <button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition
