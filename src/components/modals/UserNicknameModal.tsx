@@ -1,7 +1,15 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 
-export default forwardRef<HTMLDialogElement>(
-  function UserNicknameModal(_, ref) {
+interface UserNicknameModalProps {
+  onSubmit?: () => void;
+  disableIfNotChanged: boolean;
+}
+
+export default forwardRef<HTMLDialogElement, UserNicknameModalProps>(
+  function UserNicknameModal(
+    { onSubmit, disableIfNotChanged }: UserNicknameModalProps,
+    ref,
+  ) {
     const [nickname, setNickname] = useState('');
     const [prevNickname, setPrevNickname] = useState('');
 
@@ -9,6 +17,10 @@ export default forwardRef<HTMLDialogElement>(
       e.preventDefault();
       if (nickname) {
         localStorage.setItem('nickname', nickname);
+      }
+
+      if (onSubmit) {
+        onSubmit();
       }
     };
 
@@ -51,7 +63,10 @@ export default forwardRef<HTMLDialogElement>(
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition
             disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed
             "
-              disabled={nickname === '' || prevNickname === nickname}
+              disabled={
+                nickname === '' ||
+                (disableIfNotChanged && prevNickname === nickname)
+              }
             >
               Confirm
             </button>

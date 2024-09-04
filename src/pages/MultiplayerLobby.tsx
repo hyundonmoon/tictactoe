@@ -93,7 +93,7 @@ export default function MultiplayerLobby() {
 
       <JoinRoomModal ref={joinRoomModalRef} />
 
-      <UserNicknameModal ref={nicknameModalRef} />
+      <UserNicknameModal ref={nicknameModalRef} disableIfNotChanged={true} />
     </>
   );
 }

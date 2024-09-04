@@ -1,11 +1,11 @@
+import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import githubIcon from '../assets/github.svg';
 import UserNicknameModal from '../components/modals/UserNicknameModal';
-import { useState } from 'react';
 
 export default function LandingPage() {
-  const [isUserNickNameModalOpen, setIsNickNameModalOpen] = useState(false);
   const navigate = useNavigate();
+  const nicknameModalRef = useRef<HTMLDialogElement | null>(null);
 
   return (
     <>
@@ -26,9 +26,7 @@ export default function LandingPage() {
 
           <button
             className="bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-            onClick={() => {
-              setIsNickNameModalOpen(true);
-            }}
+            onClick={() => nicknameModalRef.current?.showModal()}
           >
             Multi player
           </button>
@@ -50,15 +48,11 @@ export default function LandingPage() {
       </div>
 
       <UserNicknameModal
-        isOpen={isUserNickNameModalOpen}
-        closeModal={() => {
-          setIsNickNameModalOpen(false);
-        }}
-        onSubmit={(nickname: string) => {
-          localStorage.setItem('nickname', nickname);
-          setIsNickNameModalOpen(false);
+        ref={nicknameModalRef}
+        onSubmit={() => {
           navigate('/multi-player/lobby');
         }}
+        disableIfNotChanged={false}
       />
     </>
   );
