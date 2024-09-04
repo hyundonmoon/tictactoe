@@ -16,7 +16,7 @@ export default function RoomList({ rooms, handleClick }: RoomListProps) {
   }
 
   return (
-    <ul className="flex-1 space-y-4 overflow-y-scroll bg-gray-200 p-4 rounded-lg shadow-inner">
+    <ul className="flex-1 space-y-4 overflow-y-scroll bg-gray-200 p-3 sm:p-4 rounded-lg shadow-inner">
       {rooms.map((room) => (
         <RoomItem key={room.id} room={room} handleClick={handleClick} />
       ))}

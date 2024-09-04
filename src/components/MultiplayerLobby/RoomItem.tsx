@@ -1,5 +1,5 @@
-import { Room } from '../../types/socket.model';
 import lockIcon from '../../assets/locked.svg';
+import { Room } from '../../types/socket.model';
 
 interface RoomItemProps {
   room: Room;
@@ -8,24 +8,36 @@ interface RoomItemProps {
 
 export default function RoomItem({ room, handleClick }: RoomItemProps) {
   return (
-    <li className="flex justify-between items-center bg-white p-4 rounded-lg shadow-md">
-      <div className="flex flex-col">
-        <div className="flex items-center space-x-1">
-          <h3 className="text-gray-800 font-semibold">{room.name}</h3>
-          {room.hasPassword && (
-            <img src={lockIcon} alt="Locked room" className="w-5 h-5" />
-          )}
-        </div>
-        <p className="text-sm text-gray-600">{room.playerCount} / 2 players</p>
-      </div>
-      <button
-        className="bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+    <>
+      <li
         onClick={() => {
           handleClick(room.id);
         }}
+        className="w-full p-4 bg-white shadow rounded flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 sm:space-x-4 hover:bg-gray-100 cursor-pointer transition"
       >
-        Join Room
-      </button>
-    </li>
+        <div className="flex-1 flex min-w-0 max-w-full items-center space-x-2">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate max-w-xs sm:max-w-none">
+            {room.name}
+          </h3>
+          {room.hasPassword && (
+            <img
+              src={lockIcon}
+              alt="Locked"
+              className="w-4 h-4 sm:w-5 sm:h-5"
+            />
+          )}
+        </div>
+        <button
+          className="hidden sm:block bg-blue-500 text-white font-semibold px-4 py-2 rounded hover:bg-blue-600 transition"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleClick(room.id);
+          }}
+        >
+          Join
+        </button>
+      </li>
+    </>
   );
 }
