@@ -3,6 +3,7 @@ import React, { forwardRef, useEffect, useState } from 'react';
 export default forwardRef<HTMLDialogElement>(
   function UserNicknameModal(_, ref) {
     const [nickname, setNickname] = useState('');
+    const [prevNickname, setPrevNickname] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
@@ -14,6 +15,7 @@ export default forwardRef<HTMLDialogElement>(
     useEffect(() => {
       if (localStorage.getItem('nickname')) {
         setNickname(localStorage.getItem('nickname') ?? '');
+        setPrevNickname(localStorage.getItem('nickname') ?? '');
       }
     }, []);
 
@@ -49,7 +51,7 @@ export default forwardRef<HTMLDialogElement>(
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition
             disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed
             "
-              disabled={nickname === ''}
+              disabled={nickname === '' || prevNickname === nickname}
             >
               Confirm
             </button>
