@@ -3,13 +3,13 @@ import MultiplayerLobbySidebarButton from './MultiplayerLobbySiderbarButton';
 
 interface MultiplayerLobbySidebarProps {
   openCreateRoomModal: () => void;
-  setJoinRoomModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  openJoinRoomModal: () => void;
   setNicknameModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function MultiplayerLobbySidebar({
   openCreateRoomModal,
-  setJoinRoomModalOpen,
+  openJoinRoomModal,
   setNicknameModalOpen,
 }: MultiplayerLobbySidebarProps) {
   const navigate = useNavigate();
@@ -29,9 +29,7 @@ export default function MultiplayerLobbySidebar({
         <MultiplayerLobbySidebarButton
           baseColorClass="bg-cyan-600"
           hoverColorClass="bg-cyan-700"
-          handleClick={() => {
-            setJoinRoomModalOpen(true);
-          }}
+          handleClick={openJoinRoomModal}
           text="Join a room"
         />
 

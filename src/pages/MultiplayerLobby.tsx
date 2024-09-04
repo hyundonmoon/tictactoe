@@ -16,11 +16,15 @@ export default function MultiplayerLobby() {
   const { socket, connected } = useSocket();
   const navigate = useNavigate();
   const [isNicknameModalOpen, setNicknameModalOpen] = useState(false);
-  const [isJoinRoomModalOpen, setJoinRoomModalOpen] = useState(false);
   const createModalRoomRef = useRef<HTMLDialogElement | null>(null);
+  const joinRoomModalRef = useRef<HTMLDialogElement | null>(null);
 
   const openCreateRoomModal = useCallback(() => {
     createModalRoomRef.current?.showModal();
+  }, []);
+
+  const openJoinRoomModal = useCallback(() => {
+    joinRoomModalRef.current?.showModal();
   }, []);
 
   useEffect(() => {
@@ -65,7 +69,7 @@ export default function MultiplayerLobby() {
             <MultiplayerLobbyMain />
             <MultiplayerLobbySidebar
               openCreateRoomModal={openCreateRoomModal}
-              setJoinRoomModalOpen={setJoinRoomModalOpen}
+              openJoinRoomModal={openJoinRoomModal}
               setNicknameModalOpen={setNicknameModalOpen}
             />
           </div>
@@ -83,12 +87,7 @@ export default function MultiplayerLobby() {
         }}
       />
 
-      <JoinRoomModal
-        isOpen={isJoinRoomModalOpen}
-        closeModal={() => {
-          setJoinRoomModalOpen(false);
-        }}
-      />
+      <JoinRoomModal ref={joinRoomModalRef} />
 
       <UserNicknameModal
         isOpen={isNicknameModalOpen}

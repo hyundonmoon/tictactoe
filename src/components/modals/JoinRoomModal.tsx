@@ -1,24 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function JoinRoomModal({
-  isOpen,
-  closeModal,
-}: {
-  isOpen: boolean;
-  closeModal: () => void;
-}) {
-  const ref = useRef<HTMLDialogElement | null>(null);
+export default forwardRef<HTMLDialogElement>(function JoinRoomModal(_, ref) {
   const [roomId, setRoomId] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isOpen) {
-      ref.current?.showModal();
-    } else {
-      ref.current?.close();
-    }
-  }, [isOpen, ref.current]);
 
   return (
     <dialog
@@ -26,10 +11,6 @@ export default function JoinRoomModal({
       ref={ref}
       onClose={() => {
         setRoomId('');
-
-        if (isOpen) {
-          closeModal();
-        }
       }}
     >
       <header className="mb-4">
@@ -73,7 +54,11 @@ export default function JoinRoomModal({
             <button
               type="button"
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md transition"
-              onClick={closeModal}
+              onClick={() => {
+                if (typeof ref !== 'function') {
+                  ref?.current?.close();
+                }
+              }}
             >
               Cancel
             </button>
@@ -91,4 +76,4 @@ export default function JoinRoomModal({
       </div>
     </dialog>
   );
-}
+});
