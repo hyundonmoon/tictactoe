@@ -35,6 +35,7 @@ export default function MultiplayerLobby() {
     const handleRoomJoin = ({ roomId }: { roomId: string }) => {
       navigate(`../play/${roomId}`);
     };
+
     if (connected) {
       socket?.on(ROOM_SERVER_TO_CLIENT.PENDING, handleRoomJoin);
     }

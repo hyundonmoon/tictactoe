@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ROOM_SERVER_TO_CLIENT } from '../../constants/socket.constants';
+import { useSocket } from '../../contexts/SocketContext';
 import useRoomList from '../../hooks/useRoomList';
 import RoomList from './RoomList';
 
 export default function MultiplayerLobbyMain() {
+  const { socket, connected } = useSocket();
   const navigate = useNavigate();
   const [roomListFilter] = useState<'waiting' | 'all'>('all');
   const {
@@ -16,6 +19,16 @@ export default function MultiplayerLobbyMain() {
   const handleRoomItemClick = (roomId: string) => {
     navigate(`../play/${roomId}`);
   };
+
+  useEffect(() => {
+    if (connected) {
+      socket?.on(ROOM_SERVER_TO_CLIENT.NEW_ROOM, refetch);
+    }
+
+    return () => {
+      socket?.off(ROOM_SERVER_TO_CLIENT.NEW_ROOM, refetch);
+    };
+  }, [socket, connected]);
 
   return (
     <div className="flex-1 flex flex-col bg-white p-4 rounded-lg shadow-md overflow-hidden mid:p-6">
