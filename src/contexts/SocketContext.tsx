@@ -3,6 +3,7 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -17,6 +18,13 @@ const URL = import.meta.env.VITE_API_URL;
 export function SocketProvider({ children }: { children: ReactNode }) {
   const socket = useRef<Socket | null>(null);
   const [connected, setConnected] = useState(false);
+
+  const value = useMemo(() => {
+    return {
+      socket: socket.current,
+      connected: connected,
+    };
+  }, [socket, connected]);
 
   useEffect(() => {
     if (socket.current === null) {
@@ -39,9 +47,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ socket: socket.current, connected }}>
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
   );
 }
 
